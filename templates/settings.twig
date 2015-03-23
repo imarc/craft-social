@@ -1,5 +1,37 @@
 {% import "_includes/forms" as forms %}
 
+<h1>General</h1>
+
+{% if not craft.social.vendorPopulated %}
+    <div class="error">
+        <strong>You need to upload your composer dependencies.</strong><br />
+        If you're seeing this message, it's because Social couldn't find the vendor/autoload.php file.
+        <br />You need to run <strong>composer install</strong> and upload all of the vendor directory to get
+        this plugin to work properly.
+    </div>
+{% endif %}
+
+<p>
+    These are general settings that control how Social behaves.
+</p>
+
+{{ forms.textField({
+	first:        true,
+	label:        "Cache Expiration"|t,
+	id:           'social_cache_expiration',
+	name:         'social_cache_expiration',
+	instructions: "How long to cache tweets in seconds (Default: 1200)"|t,
+	value:        settings.social_cache_expiration,
+	autofocus:    true,
+	errors:       settings.getErrors('social_cache_expiration')
+}) }}
+
+<h1>Twitter</h1>
+
+<p>
+    The following settings are required for Twitter.
+</p>
+
 {{ forms.textField({
 	first:        true,
 	label:        "Twitter Consumer Key"|t,
@@ -22,15 +54,91 @@
 	errors:       settings.getErrors('twitter_consumer_secret')
 }) }}
 
-<br />
+<h2>Example:</h2>
+
+{% for post in craft.social.posts({ network: 'Twitter', limit: 2 }) %}
+    <hr />
+    <div>
+        <cite>
+            {{ post.author }} posted
+            at <a href="{{ post.link }}"><abbr title="post.created">{{ post.created|date('F j, Y') }}</a>:
+        </cite>
+
+        {% if post.picture %}
+            <div>
+                <img src="{{ post.picture }}" alt="" />
+            </div>
+        {% endif %}
+
+        <blockquote>{{ post.message }}</blockquote>
+    </div>
+{%endfor %}
+<hr />
+
+<h1>Facebook</h1>
+
+<p>
+    The following settings are required for Facebook.
+</p>
 
 {{ forms.textField({
 	first:        true,
-	label:        "Twitter Cache Expiration"|t,
-	id:           'twitter_cache_expiration',
-	name:         'twitter_cache_expiration',
-	instructions: "How long to cache tweets in seconds (Default: 1200)"|t,
-	value:        settings.twitter_cache_expiration,
+	label:        "Facebook App ID"|t,
+	id:           'facebook_app_id',
+	name:         'facebook_app_id',
+	instructions: "The Facebook App ID is unique and generated when you create an app in Facebook's Developer interface."|t,
+	value:        settings.facebook_app_id,
 	autofocus:    true,
-	errors:       settings.getErrors('twitter_cache_expiration')
+	errors:       settings.getErrors('facebook_app_id')
 }) }}
+
+{{ forms.textField({
+	first:        true,
+	label:        "Facebook App Secret"|t,
+	id:           'facebook_app_secret',
+	name:         'facebook_app_secret',
+	instructions: "The Facebook App Secret is unique and tied to a Facebook App ID."|t,
+	value:        settings.facebook_app_secret,
+	autofocus:    true,
+	errors:       settings.getErrors('facebook_app_secret')
+}) }}
+
+<h2>Example:</h2>
+
+{% for post in craft.social.posts({ network: 'Facebook', limit: 2 }) %}
+    <hr />
+    <div>
+        <cite>
+            {{ post.author }} posted
+            at <a href="{{ post.link }}"><abbr title="post.created">{{ post.created|date('F j, Y') }}</a>:
+        </cite>
+
+        {% if post.picture %}
+            <div>
+                <img src="{{ post.picture }}" alt="" />
+            </div>
+        {% endif %}
+
+        <blockquote>{{ post.message }}</blockquote>
+    </div>
+{% endfor %}
+<hr />
+
+{#
+<h1>Instagram</h1>
+
+<p>
+    The following access token is required for Instagram.
+</p>
+
+{{ forms.textField({
+	first:        true,
+	label:        "Instagram Access Token"|t,
+	id:           'instagram_access_token',
+	name:         'instagram_access_token',
+	instructions: "An Instagram access token."|t,
+	value:        settings.instagram_access_token,
+	autofocus:    true,
+	errors:       settings.getErrors('instagram_access_token')
+}) }}
+#}

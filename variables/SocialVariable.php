@@ -3,6 +3,74 @@ namespace Craft;
 
 class SocialVariable
 {
+    const CACHE_FILE = 'posts.cache';
+
+    public function cachePosts($posts=null)
+    {
+        $settings = craft()->plugins->getPlugin('social')->getSettings();
+
+        $filename = craft()->path->getStoragePath() . 'social/';
+        IOHelper::ensureFolderExists($filename);
+        $filename = $filename . self::CACHE_FILE;
+
+        if ($posts !== null) {
+            file_put_contents($filename, json_encode($posts));
+        } else {
+            if (file_exists($filename)) {
+                $age = time() - filemtime($filename);
+                if ($age <= $settings->social_cache_expiration) {
+                    return json_decode(file_get_contents($filename));
+                }
+            }
+            return [];
+        }
+    }
+
+    public function vendorPopulated()
+    {
+        return file_exists(dirname(__DIR__) . '/vendor/autoload.php');
+    }
+
+    public function posts(array $criteria=array())
+    {
+        $posts = $this->cachePosts();
+
+        if (!$posts) {
+            $posts = array_merge($posts, craft()->social_facebook->findPosts());
+            $posts = array_merge($posts, craft()->social_twitter->findPosts());
+            //$posts = array_merge($posts, craft()->social_instagram->findPosts());
+
+            if ($posts) {
+                $this->cachePosts($posts);
+            }
+        }
+
+        if (count($criteria)) {
+            foreach ($posts as $key => $post) {
+                foreach ($criteria as $field => $req) {
+                    if (!isset($post->{$field})) {
+                        continue;
+                    }
+                    if (is_array($req)) {
+                        if (!in_array($post->{$field}, $req)) {
+                            unset($posts[$key]);
+                        }
+                    } elseif (is_string($req)) {
+                        if ($post->{$field} != $req) {
+                            unset($posts[$key]);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (isset($criteria['limit'])) {
+            $posts = array_slice($posts, 0, $criteria['limit']);
+        }
+
+        return $posts;
+    }
+
 	static public function relativeTime($timestamp, $newer_timestamp=NULL)
 	{
 		if ($newer_timestamp === NULL) {
@@ -31,60 +99,5 @@ class SocialVariable
 			$seconds = $time_since;
 			return $seconds . ' ' . ($seconds == 1 ? 'second' : 'seconds') . ' ago';
 		}
-	}
-
-	public function twitterUserTimeline($params)
-	{
-		return craft()->social_twitter->userTimeline($params);
-	}
-
-	public function facebookPosts()
-	{
-		return craft()->social_facebook->posts();
-	}
-
-	public function instagramPosts()
-	{
-		return craft()->social_instagram->posts();
-	}
-
-	static private $facebook_posts = null;
-	public function facebookNext()
-	{
-		if (null === self::$facebook_posts) {
-			self::$facebook_posts = $this->facebookPosts();
-		}
-
-		$post = array_shift(self::$facebook_posts);
-		$post['relative_time'] = self::relativeTime($post['created_time']);
-
-		if (!isset($post['message']) && !isset($post['large_picture'])) {
-			return $this->facebookNext();
-		}
-
-		return $post;
-	}
-
-	static private $instagram_posts = null;
-	public function instagramNext()
-	{
-		if (null === self::$instagram_posts) {
-			self::$instagram_posts = $this->instagramPosts();
-		}
-
-		$post = array_shift(self::$instagram_posts);
-
-		$post['relative_time'] = self::relativeTime($post['created_time']);
-		return $post;
-	}
-
-	static private $twitter_posts = null;
-	public function twitterNext()
-	{
-		if (null === self::$twitter_posts) {
-			self::$twitter_posts = $this->twitterUserTimeline('astonmartin');
-		}
-
-		return array_shift(self::$twitter_posts);
 	}
 }

@@ -3,6 +3,15 @@ namespace Craft;
 
 class SocialPlugin extends BasePlugin
 {
+    public function init()
+    {
+        if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+            require __DIR__ . '/vendor/autoload.php';
+        }
+
+        return parent::init();
+    }
+
 	public function getName()
 	{
 		return Craft::t('Social');
@@ -26,9 +35,15 @@ class SocialPlugin extends BasePlugin
 	function defineSettings()
 	{
 		return [
+            'facebook_app_id'          => [AttributeType::String, 'default' => ''],
+            'facebook_app_secret'      => [AttributeType::String, 'default' => ''],
+
 			'twitter_consumer_key'     => [AttributeType::String, 'default' => ''],
 			'twitter_consumer_secret'  => [AttributeType::String, 'default' => ''],
-			'twitter_cache_expiration' => [AttributeType::Number, 'default' => 1200]
+
+            'instagram_access_token'   => [AttributeType::String, 'default' => ''],
+
+            'social_cache_expiration'  => [AttributeType::Number, 'default' => 1200]
 		];
 	}
 
