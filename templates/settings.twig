@@ -34,6 +34,17 @@
 
 {{ forms.textField({
 	first:        true,
+	label:        "Twitter Screen Name"|t,
+	id:           'twitter_screen_name',
+	name:         'twitter_screen_name',
+	instructions: "The Twitter screen name we should pull tweets from."|t,
+	value:        settings.twitter_screen_name,
+	autofocus:    true,
+	errors:       settings.getErrors('twitter_screen_name')
+}) }}
+
+{{ forms.textField({
+	first:        true,
 	label:        "Twitter Consumer Key"|t,
 	id:           'twitter_consumer_key',
 	name:         'twitter_consumer_key',
@@ -80,6 +91,17 @@
 <p>
     The following settings are required for Facebook.
 </p>
+
+{{ forms.textField({
+	first:        true,
+	label:        "Facebook User ID"|t,
+	id:           'facebook_user_id',
+	name:         'facebook_user_id',
+	instructions: "This is a unique ID that identifies the current user. To get, go to http://graph.facebook.com/PROFILE."|t,
+	value:        settings.facebook_user_id,
+	autofocus:    true,
+	errors:       settings.getErrors('facebook_user_id')
+}) }}
 
 {{ forms.textField({
 	first:        true,

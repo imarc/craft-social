@@ -85,8 +85,10 @@ class Social_TwitterService extends BaseApplicationComponent
 
     public function findPosts($options=array())
     {
+        $settings = craft()->plugins->getPlugin('social')->getSettings();
+
         $defaults = [
-            'screen_name' => 'WSI_Weather'
+            'screen_name' => $settings->twitter_screen_name
         ];
         $options = array_merge($defaults, $options);
 

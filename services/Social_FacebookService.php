@@ -42,11 +42,10 @@ class Social_FacebookService extends BaseApplicationComponent
         return $this->session;
     }
 
-    public function findPosts($user_id='160848247281909')
+    public function findPosts()
     {
-        if ($user_id === null) {
-            //TODO make a setting for default facebook user ID
-        }
+        $settings = craft()->plugins->getPlugin('social')->getSettings();
+        $user_id = $settings->facebook_user_id;
 
         $session = $this->getFacebookSession();
 

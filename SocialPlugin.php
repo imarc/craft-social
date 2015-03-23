@@ -37,7 +37,9 @@ class SocialPlugin extends BasePlugin
 		return [
             'facebook_app_id'          => [AttributeType::String, 'default' => ''],
             'facebook_app_secret'      => [AttributeType::String, 'default' => ''],
+            'facebook_user_id'         => [AttributeType::String, 'default' => ''],
 
+            'twitter_screen_name'      => [AttributeType::String, 'default' => ''],
 			'twitter_consumer_key'     => [AttributeType::String, 'default' => ''],
 			'twitter_consumer_secret'  => [AttributeType::String, 'default' => ''],
 
