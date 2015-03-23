@@ -1,0 +1,12 @@
+{
+    "name": "imarc/craft-social",
+    "authors": [
+        {
+            "name": "Kevin Hamer",
+            "email": "kevin@imarc.net"
+        }
+    ],
+    "require": {
+		"facebook/php-sdk-v4": "4.0.*"
+	}
+}

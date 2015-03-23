@@ -1,0 +1,36 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.textField({
+	first:        true,
+	label:        "Twitter Consumer Key"|t,
+	id:           'twitter_consumer_key',
+	name:         'twitter_consumer_key',
+	instructions: "Twitter Consumer Key the Twitter Application API."|t,
+	value:        settings.twitter_consumer_key,
+	autofocus:    true,
+	errors:       settings.getErrors('twitter_consumer_key')
+}) }}
+
+{{ forms.textField({
+	first:        true,
+	label:        "Twitter Consumer Secret"|t,
+	id:           'twitter_consumer_secret',
+	name:         'twitter_consumer_secret',
+	instructions: "Twitter Consumer Secret the Twitter Application API."|t,
+	value:        settings.twitter_consumer_secret,
+	autofocus:    true,
+	errors:       settings.getErrors('twitter_consumer_secret')
+}) }}
+
+<br />
+
+{{ forms.textField({
+	first:        true,
+	label:        "Twitter Cache Expiration"|t,
+	id:           'twitter_cache_expiration',
+	name:         'twitter_cache_expiration',
+	instructions: "How long to cache tweets in seconds (Default: 1200)"|t,
+	value:        settings.twitter_cache_expiration,
+	autofocus:    true,
+	errors:       settings.getErrors('twitter_cache_expiration')
+}) }}
