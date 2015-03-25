@@ -43,6 +43,8 @@ class SocialPlugin extends BasePlugin
 			'twitter_consumer_key'     => [AttributeType::String, 'default' => ''],
 			'twitter_consumer_secret'  => [AttributeType::String, 'default' => ''],
 
+            'wordpress_rss_feed'       => [AttributeType::String, 'defualt' => ''],
+
             'instagram_access_token'   => [AttributeType::String, 'default' => ''],
 
             'social_cache_expiration'  => [AttributeType::Number, 'default' => 1200]

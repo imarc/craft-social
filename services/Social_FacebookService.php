@@ -68,9 +68,20 @@ class Social_FacebookService extends BaseApplicationComponent
 
         foreach ($graph_objects as $graph_object) {
             $native = $graph_object->asArray();
+
+            // remove the 'trailing' t.co link
+            $message = preg_replace('#http://t.co/[^ ]*$#', '', $native['message']);
+
+            // linkify remaining URLs
+            $message = preg_replace(
+                '/(https?:\/\/([A-Za-z0-9-._~:\/?#\[\]@!$&\'()*+,;=%]*))/',
+                '<a href="\1">\2</a>',
+                $message
+            );
+
             $posts[] = [
                 'network'     => 'Facebook',
-                'message'     => $native['message'],
+                'message'     => $message,
                 'link'        => isset($native['link']) ? $native['link'] : ($f . $native['id']),
                 'picture'     => isset($native['picture']) ? $native['picture'] : false,
                 'author'      => $native['from']->name,

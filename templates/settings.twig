@@ -72,7 +72,7 @@
     <div>
         <cite>
             {{ post.author }} posted
-            at <a href="{{ post.link }}"><abbr title="post.created">{{ post.created|date('F j, Y') }}</a>:
+            at <a href="{{ post.link }}">{{ post.created|date('F j, Y') }} ({{ post.relative }})</a>:
         </cite>
 
         {% if post.picture %}
@@ -83,7 +83,7 @@
 
         <blockquote>{{ post.message }}</blockquote>
     </div>
-{%endfor %}
+{% endfor %}
 <hr />
 
 <h1>Facebook</h1>
@@ -132,8 +132,50 @@
     <div>
         <cite>
             {{ post.author }} posted
-            at <a href="{{ post.link }}"><abbr title="post.created">{{ post.created|date('F j, Y') }}</a>:
+            at <a href="{{ post.link }}">{{ post.created|date('F j, Y') }} ({{ post.relative }})</a>:
         </cite>
+
+        {% if post.picture %}
+            <div>
+                <img src="{{ post.picture }}" alt="" />
+            </div>
+        {% endif %}
+
+        <blockquote>{{ post.message }}</blockquote>
+    </div>
+{% endfor %}
+<hr />
+
+<h1>WordPress</h1>
+
+<p>
+    For WordPress, we can pull in recent items from a single RSS feed.
+</p>
+
+{{ forms.textField({
+	first:        true,
+	label:        "WordPress RSS Feed URL"|t,
+	id:           'wordpress_rss_feed',
+	name:         'wordpress_rss_feed',
+	instructions: "The URL of a WordPress RSS feed."|t,
+	value:        settings.wordpress_rss_feed,
+	autofocus:    true,
+	errors:       settings.getErrors('wordpress_rss_feed')
+}) }}
+
+<h2>Example:</h2>
+
+{% for post in craft.social.posts({ network: 'WordPress', limit: 2 }) %}
+    <hr />
+    <div>
+        <cite>
+            {{ post.author }} posted
+            at <a href="{{ post.link }}">{{ post.created|date('F j, Y') }} ({{ post.relative }})</a>:
+        </cite>
+
+        {% if post.title is defined %}
+            <h4>{{ post.title }}</h4>
+        {% endif %}
 
         {% if post.picture %}
             <div>
