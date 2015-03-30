@@ -70,7 +70,11 @@ class Social_FacebookService extends BaseApplicationComponent
             $native = $graph_object->asArray();
 
             // remove the 'trailing' t.co link
-            $message = preg_replace('#http://t.co/[^ ]*$#', '', $native['message']);
+			if (isset($native['message'])) {
+				$message = preg_replace('#http://t.co/[^ ]*$#', '', $native['message']);
+			} else {
+				$message = null;
+			}
 
             // linkify remaining URLs
             $message = preg_replace(

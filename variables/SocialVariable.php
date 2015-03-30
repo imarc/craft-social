@@ -103,7 +103,7 @@ class SocialVariable
         }
 
         usort($posts, function($a, $b) {
-            return $a['created'] > $b['created'];
+            return $a['created'] < $b['created'];
         });
 
         if (isset($criteria['limit'])) {
