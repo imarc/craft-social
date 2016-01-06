@@ -3,11 +3,11 @@ namespace Craft;
 
 class Social_TwitterService extends BaseApplicationComponent
 {
-	const TOKEN_URL             = 'https://api.twitter.com/oauth2/token';
-	const USER_TIMELINE_URL     = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
-	const MENTIONS_TIMELINE_URL = 'https://api.twitter.com/1.1/statuses/mentions_timeline.json';
-	const HOME_TIMELINE_URL     = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
-	const RETWEETS_TIMELINE_URL = 'https://api.twitter.com/1.1/statuses/retweets_of_me.json';
+    const TOKEN_URL             = 'https://api.twitter.com/oauth2/token';
+    const USER_TIMELINE_URL     = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
+    const MENTIONS_TIMELINE_URL = 'https://api.twitter.com/1.1/statuses/mentions_timeline.json';
+    const HOME_TIMELINE_URL     = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
+    const RETWEETS_TIMELINE_URL = 'https://api.twitter.com/1.1/statuses/retweets_of_me.json';
 
     private $token = null;
 
@@ -60,26 +60,26 @@ class Social_TwitterService extends BaseApplicationComponent
         return $this->token;
     }
 
-	protected function request($url, $params)
-	{
-		$url_with_params = $url . '?' . http_build_query($params);
+    protected function request($url, $params)
+    {
+        $url_with_params = $url . '?' . http_build_query($params);
 
         $token = $this->getBearerToken();
 
-		$context = stream_context_create(array(
-			'http' => array(
-				'method' => 'GET',
-				'header' => join("\r\n", array("Authorization: Bearer " . $token)),
-				'ignore_errors' => TRUE
-			)
-		));
+        $context = stream_context_create(array(
+            'http' => array(
+                'method' => 'GET',
+                'header' => join("\r\n", array("Authorization: Bearer " . $token)),
+                'ignore_errors' => TRUE
+            )
+        ));
 
        $response = file_get_contents(
             $url_with_params, FALSE, $context
         );
 
         return json_decode($response);
-	}
+    }
 
     public function findPosts($options=array())
     {

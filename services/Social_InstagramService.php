@@ -5,25 +5,47 @@ use InstagramAPI;
 
 class Social_InstagramService extends BaseApplicationComponent
 {
-	protected $api_client = null;
+    const RECENT_MEDIA = 'https://api.instagram.com/v1/users/';
 
-	protected function getAPIClient()
-	{
-		if ($this->api_client === null) {
+    public function findPosts()
+    {
+        $settings = craft()->plugins->getPlugin('social')->getSettings();
 
-			trait_exists('SimpleCacheTrait') || include dirname(__DIR__) . '/lib/SimpleCacheTrait.php';
-			class_exists('InstagramAPI') || include dirname(__DIR__) . '/lib/InstagramAPI.php';
+        if (!$settings->instagram_access_token) {
+            return [];
+        }
 
-			$this->api_client = new InstagramAPI();
-		}
+        if (!$settings->instagram_user_id) {
+            return [];
+        }
 
-		return $this->api_client;
-	}
+        $url = static::RECENT_MEDIA . $settings->instagram_user_id . '/media/recent/';
+        $url .= '?access_token=' . $settings->instagram_access_token;
 
-	public function posts()
-	{
-		$client = $this->getAPIClient();
+        $response = file_get_contents($url);
 
-		return $client->posts();
-	}
+        $data = json_decode($response, true);
+
+        if (!$data['data']) {
+            throw new Exception("Error communicating with the Instagram API");
+        }
+
+        $posts = [];
+        foreach ($data['data'] as $post) {
+            $author_link = 'https://www.instagram.com/' . $post['user']['username'];
+            $posts[] = [
+                'network' => 'Instagram',
+                'message' => $post['caption']['text'],
+                'link'    => $post['link'],
+                'picture' => $post['images']['standard_resolution']['url'],
+                'author'  => $post['user']['username'],
+                'author_link' => $author_link,
+                'created' => $post['created_time'],
+                'native' => $post,
+                'print_r' => print_r($post, true)
+            ];
+        }
+
+        return $posts;
+    }
 }

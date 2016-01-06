@@ -7,35 +7,35 @@ namespace Craft;
  */
 class SocialVariable
 {
-	static public function relativeTime($timestamp, $newer_timestamp=NULL)
-	{
-		if ($newer_timestamp === NULL) {
-			$newer_timestamp = time();
-		}
+    static public function relativeTime($timestamp, $newer_timestamp=NULL)
+    {
+        if ($newer_timestamp === NULL) {
+            $newer_timestamp = time();
+        }
 
-		if (!is_numeric($timestamp)) {
-			$timestamp = strtotime(preg_replace('/^[^ ]* /', '', $timestamp));
-		}
+        if (!is_numeric($timestamp)) {
+            $timestamp = strtotime(preg_replace('/^[^ ]* /', '', $timestamp));
+        }
 
-		$time_since = $newer_timestamp - $timestamp;
+        $time_since = $newer_timestamp - $timestamp;
 
-		if ($time_since > 604800) {
-			$weeks = floor($time_since/604800);
-			return $weeks . ' ' . ($weeks == 1 ? 'week' : 'weeks') . ' ago';
-		} elseif ($time_since > 86400) {
-			$days = floor($time_since/86400);
-			return $days . ' ' . ($days == 1 ? 'day' : 'days') . ' ago';
-		} elseif ($time_since > 3600) {
-			$hours = floor($time_since/3600);
-			return $hours . ' ' . ($hours == 1 ? 'hour' : 'hours') . ' ago';
-		} elseif ($time_since > 60) {
-			$minutes = floor($time_since/60);
-			return $minutes . ' ' . ($minutes == 1 ? 'minute' : 'minutes') . ' ago';
-		} else {
-			$seconds = $time_since;
-			return $seconds . ' ' . ($seconds == 1 ? 'second' : 'seconds') . ' ago';
-		}
-	}
+        if ($time_since > 604800) {
+            $weeks = floor($time_since/604800);
+            return $weeks . ' ' . ($weeks == 1 ? 'week' : 'weeks') . ' ago';
+        } elseif ($time_since > 86400) {
+            $days = floor($time_since/86400);
+            return $days . ' ' . ($days == 1 ? 'day' : 'days') . ' ago';
+        } elseif ($time_since > 3600) {
+            $hours = floor($time_since/3600);
+            return $hours . ' ' . ($hours == 1 ? 'hour' : 'hours') . ' ago';
+        } elseif ($time_since > 60) {
+            $minutes = floor($time_since/60);
+            return $minutes . ' ' . ($minutes == 1 ? 'minute' : 'minutes') . ' ago';
+        } else {
+            $seconds = $time_since;
+            return $seconds . ' ' . ($seconds == 1 ? 'second' : 'seconds') . ' ago';
+        }
+    }
 
     static $networks = null;
 
@@ -44,6 +44,7 @@ class SocialVariable
         if (self::$networks === null) {
             self::$networks = [
                 'Facebook'  => craft()->social_facebook,
+                'Instagram' => craft()->social_instagram,
                 'Twitter'   => craft()->social_twitter,
                 'WordPress' => craft()->social_wordpress
             ];

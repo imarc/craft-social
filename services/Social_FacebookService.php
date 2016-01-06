@@ -29,7 +29,7 @@ class Social_FacebookService extends BaseApplicationComponent
                 'client_secret' => $settings->facebook_app_secret,
                 'grant_type' => 'client_credentials'
             ])
-		);
+        );
 
         if (strpos($response, 'access_token=') !== 0) {
             throw new Exception('Facebook authentication failed.');
@@ -70,11 +70,11 @@ class Social_FacebookService extends BaseApplicationComponent
             $native = $graph_object->asArray();
 
             // remove the 'trailing' t.co link
-			if (isset($native['message'])) {
-				$message = preg_replace('#http://t.co/[^ ]*$#', '', $native['message']);
-			} else {
-				$message = null;
-			}
+            if (isset($native['message'])) {
+                $message = preg_replace('#http://t.co/[^ ]*$#', '', $native['message']);
+            } else {
+                $message = null;
+            }
 
             // linkify remaining URLs
             $message = preg_replace(
