@@ -1,5 +1,10 @@
 {
     "name": "imarc/craft-social",
+    "description": "A Craft plugin that provides integration with a few social networks for use in templates.",
+    "homepage": "https://github.com/imarc/craft-social",
+    "version": "1.0.1",
+    "type": "craft-plugin",
+    "license": "Apache",
     "authors": [
         {
             "name": "Kevin Hamer",
@@ -7,6 +12,7 @@
         }
     ],
     "require": {
-		"facebook/php-sdk-v4": "4.0.*"
-	}
+        "facebook/php-sdk-v4": "4.0.*",
+        "composer/installers": "~1.0"
+    }
 }
