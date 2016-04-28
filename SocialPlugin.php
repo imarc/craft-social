@@ -1,6 +1,18 @@
 <?php
+/**
+ * @copyright 2016 Imarc LLC
+ * @author Kevin Hamer [kh] <kevin@imarc.com>
+ * @license Apache (see LICENSE file)
+ */
+
 namespace Craft;
 
+/**
+ * SocialPlugin is a Craft plugin that provides Facebook, Twitter, Instragram,
+ * and WordPress feed integration. It tries to aggregate and normalize posts to
+ * these services so they can be easily displayed in a 'single stream' of mixed
+ * content (by post date, for example.)
+ */
 class SocialPlugin extends BasePlugin
 {
     public function init()
@@ -24,35 +36,35 @@ class SocialPlugin extends BasePlugin
 
     public function getDeveloper()
     {
-        return 'imarc';
+        return 'Imarc';
     }
 
     public function getDeveloperUrl()
     {
-        return 'http://www.imarc.com';
+        return 'https://www.Imarc.com';
     }
 
-    function defineSettings()
+    public function defineSettings()
     {
         return [
-            'facebook_app_id'          => [AttributeType::String, 'default' => ''],
-            'facebook_app_secret'      => [AttributeType::String, 'default' => ''],
-            'facebook_user_id'         => [AttributeType::String, 'default' => ''],
+            'facebook_app_id' => [AttributeType::String, 'default' => ''],
+            'facebook_app_secret' => [AttributeType::String, 'default' => ''],
+            'facebook_user_id' => [AttributeType::String, 'default' => ''],
 
-            'twitter_screen_name'      => [AttributeType::String, 'default' => ''],
-            'twitter_consumer_key'     => [AttributeType::String, 'default' => ''],
-            'twitter_consumer_secret'  => [AttributeType::String, 'default' => ''],
+            'twitter_screen_name' => [AttributeType::String, 'default' => ''],
+            'twitter_consumer_key' => [AttributeType::String, 'default' => ''],
+            'twitter_consumer_secret' => [AttributeType::String, 'default' => ''],
 
-            'wordpress_rss_feed'       => [AttributeType::String, 'default' => ''],
+            'wordpress_rss_feed' => [AttributeType::String, 'default' => ''],
 
-            'instagram_access_token'   => [AttributeType::String, 'default' => ''],
-            'instagram_user_id'        => [AttributeType::String, 'default' => ''],
+            'instagram_access_token' => [AttributeType::String, 'default' => ''],
+            'instagram_user_id' => [AttributeType::String, 'default' => ''],
 
-            'social_cache_expiration'  => [AttributeType::Number, 'default' => 1200]
+            'social_cache_expiration' => [AttributeType::Number, 'default' => 1200],
         ];
     }
 
-    function getSettingsHtml()
+    public function getSettingsHtml()
     {
         return craft()->templates->render('social/settings', ['settings' => $this->getSettings()]);
     }
