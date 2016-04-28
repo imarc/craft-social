@@ -17,9 +17,7 @@ class SocialPlugin extends BasePlugin
 {
     public function init()
     {
-        if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-            require __DIR__ . '/vendor/autoload.php';
-        }
+        require_once CRAFT_BASE_PATH . '../vendor/autoload.php';
 
         return parent::init();
     }
