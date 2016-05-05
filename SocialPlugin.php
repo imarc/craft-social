@@ -45,25 +45,25 @@ class SocialPlugin extends BasePlugin
     public function defineSettings()
     {
         return [
-            'facebook_app_id' => [AttributeType::String, 'default' => ''],
-            'facebook_app_secret' => [AttributeType::String, 'default' => ''],
-            'facebook_user_id' => [AttributeType::String, 'default' => ''],
+            'facebook_app_id' => array(AttributeType::String, 'default' => ''),
+            'facebook_app_secret' => array(AttributeType::String, 'default' => ''),
+            'facebook_user_id' => array(AttributeType::String, 'default' => ''),
 
-            'twitter_screen_name' => [AttributeType::String, 'default' => ''],
-            'twitter_consumer_key' => [AttributeType::String, 'default' => ''],
-            'twitter_consumer_secret' => [AttributeType::String, 'default' => ''],
+            'twitter_screen_name' => array(AttributeType::String, 'default' => ''),
+            'twitter_consumer_key' => array(AttributeType::String, 'default' => ''),
+            'twitter_consumer_secret' => array(AttributeType::String, 'default' => ''),
 
-            'wordpress_rss_feed' => [AttributeType::String, 'default' => ''],
+            'wordpress_rss_feed' => array(AttributeType::String, 'default' => ''),
 
-            'instagram_access_token' => [AttributeType::String, 'default' => ''],
-            'instagram_user_id' => [AttributeType::String, 'default' => ''],
+            'instagram_access_token' => array(AttributeType::String, 'default' => ''),
+            'instagram_user_id' => array(AttributeType::String, 'default' => ''),
 
-            'social_cache_expiration' => [AttributeType::Number, 'default' => 1200],
+            'social_cache_expiration' => array(AttributeType::Number, 'default' => 1200),
         ];
     }
 
     public function getSettingsHtml()
     {
-        return craft()->templates->render('social/settings', ['settings' => $this->getSettings()]);
+        return craft()->templates->render('social/settings', array('settings' => $this->getSettings()));
     }
 }
