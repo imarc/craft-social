@@ -44,7 +44,7 @@ class SocialPlugin extends BasePlugin
 
     public function defineSettings()
     {
-        return [
+        return array(
             'facebook_app_id' => array(AttributeType::String, 'default' => ''),
             'facebook_app_secret' => array(AttributeType::String, 'default' => ''),
             'facebook_user_id' => array(AttributeType::String, 'default' => ''),
@@ -59,7 +59,7 @@ class SocialPlugin extends BasePlugin
             'instagram_user_id' => array(AttributeType::String, 'default' => ''),
 
             'social_cache_expiration' => array(AttributeType::Number, 'default' => 1200),
-        ];
+        );
     }
 
     public function getSettingsHtml()
