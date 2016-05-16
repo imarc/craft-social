@@ -12,11 +12,11 @@ class Social_InstagramService extends BaseApplicationComponent
         $settings = craft()->plugins->getPlugin('social')->getSettings();
 
         if (!$settings->instagram_access_token) {
-            return [];
+            return array();
         }
 
         if (!$settings->instagram_user_id) {
-            return [];
+            return array();
         }
 
         $url = static::RECENT_MEDIA . $settings->instagram_user_id . '/media/recent/';
@@ -30,10 +30,10 @@ class Social_InstagramService extends BaseApplicationComponent
             throw new Exception("Error communicating with the Instagram API");
         }
 
-        $posts = [];
+        $posts = array();
         foreach ($data['data'] as $post) {
             $author_link = 'https://www.instagram.com/' . $post['user']['username'];
-            $posts[] = [
+            $posts[] = array(
                 'network' => 'Instagram',
                 'message' => $post['caption']['text'],
                 'link'    => $post['link'],
@@ -43,7 +43,7 @@ class Social_InstagramService extends BaseApplicationComponent
                 'created' => $post['created_time'],
                 'native' => $post,
                 'print_r' => print_r($post, true)
-            ];
+            );
         }
 
         return $posts;

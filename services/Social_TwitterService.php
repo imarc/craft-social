@@ -32,16 +32,16 @@ class Social_TwitterService extends BaseApplicationComponent
             $curl = curl_init(self::TOKEN_URL);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
             curl_setopt(
                 $curl,
                 CURLOPT_USERPWD,
                 $settings->twitter_consumer_key . ':' . $settings->twitter_consumer_secret
             );
 
-            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query([
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array(
                 'grant_type' => 'client_credentials'
-            ]));
+            )));
 
             $response = curl_exec($curl);
             $status   = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -85,14 +85,14 @@ class Social_TwitterService extends BaseApplicationComponent
     {
         $settings = craft()->plugins->getPlugin('social')->getSettings();
 
-        $defaults = [
+        $defaults = array(
             'screen_name' => $settings->twitter_screen_name
-        ];
+        );
         $options = array_merge($defaults, $options);
 
         $tweets = $this->request(self::USER_TIMELINE_URL, $options);
 
-        $posts = [];
+        $posts = array();
 
         $t = 'https://www.twitter.com/';
 
@@ -117,7 +117,7 @@ class Social_TwitterService extends BaseApplicationComponent
             );
 
 
-            $posts[] = [
+            $posts[] = array(
                 'network' => 'Twitter',
                 'message' => $message,
                 'link'    => $t . $tweet->user->name . '/status/' . $tweet->id_str,
@@ -129,7 +129,7 @@ class Social_TwitterService extends BaseApplicationComponent
 
                 'print_r' => print_r($tweet, true),
                 'native'  => $tweet
-            ];
+            );
         }
 
         return $posts;

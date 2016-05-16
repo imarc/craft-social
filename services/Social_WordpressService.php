@@ -8,15 +8,15 @@ class Social_WordpressService extends BaseApplicationComponent
         $settings = craft()->plugins->getPlugin('social')->getSettings();
 
         if (!$settings->wordpress_rss_feed) {
-            return [];
+            return array();
         }
 
         $response = simplexml_load_file($settings->wordpress_rss_feed);
 
-        $posts = [];
+        $posts = array();
 
         foreach ($response->channel->item as $item) {
-            $post = [
+            $post = array(
                 'network'     => 'WordPress',
                 'title'       => (string) $item->title,
                 'message'     => (string) $item->description,
@@ -27,7 +27,7 @@ class Social_WordpressService extends BaseApplicationComponent
                 'created'     => strtotime((string) $item->pubDate),
 
                 'native'      => (array) $item
-            ];
+            );
 
             $post['print_r'] = print_r($post, true);
             $posts[] = $post;

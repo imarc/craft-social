@@ -24,11 +24,11 @@ class Social_FacebookService extends BaseApplicationComponent
 
         $response = file_get_contents(
             'https://graph.facebook.com/oauth/access_token?'
-            . http_build_query([
+            . http_build_query(array(
                 'client_id' => $settings->facebook_app_id,
                 'client_secret' => $settings->facebook_app_secret,
                 'grant_type' => 'client_credentials'
-            ])
+            ))
         );
 
         if (strpos($response, 'access_token=') !== 0) {
@@ -50,7 +50,7 @@ class Social_FacebookService extends BaseApplicationComponent
         $session = $this->getFacebookSession();
 
         if ($session === false) {
-            return [];
+            return array();
         }
 
         $request = new FacebookRequest(
@@ -62,7 +62,7 @@ class Social_FacebookService extends BaseApplicationComponent
 
         $graph_objects = $response->getGraphObjectList();
 
-        $posts = [];
+        $posts = array();
 
         $f = 'http://www.facebook.com/';
 
@@ -83,7 +83,7 @@ class Social_FacebookService extends BaseApplicationComponent
                 $message
             );
 
-            $posts[] = [
+            $posts[] = array(
                 'network'     => 'Facebook',
                 'message'     => $message,
                 'link'        => isset($native['link']) ? $native['link'] : ($f . $native['id']),
@@ -94,11 +94,9 @@ class Social_FacebookService extends BaseApplicationComponent
 
                 'print_r'     => print_r($native, true),
                 'native'      => $native
-            ];
+            );
         }
 
         return $posts;
     }
 }
-
-https://www.facebook.com/WSI.WeatherServicesInternational/posts/948094638557262

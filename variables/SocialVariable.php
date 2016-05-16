@@ -42,12 +42,12 @@ class SocialVariable
     public function __construct()
     {
         if (self::$networks === null) {
-            self::$networks = [
+            self::$networks = array(
                 'Facebook'  => craft()->social_facebook,
                 'Instagram' => craft()->social_instagram,
                 'Twitter'   => craft()->social_twitter,
                 'WordPress' => craft()->social_wordpress
-            ];
+            );
         }
     }
 
@@ -68,7 +68,7 @@ class SocialVariable
                     return json_decode(file_get_contents($filename), true);
                 }
             }
-            return [];
+            return array();
         }
     }
 
@@ -79,11 +79,11 @@ class SocialVariable
 
     public function posts(array $criteria=array())
     {
-        $posts = [];
+        $posts = array();
 
         if (isset($criteria['network'])) {
             if (is_string($criteria['network'])) {
-                $networks = [$criteria['network']];
+                $networks = array($criteria['network']);
             } else {
                 $networks = $criteria['network'];
             }
