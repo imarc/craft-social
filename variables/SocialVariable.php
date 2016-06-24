@@ -7,9 +7,9 @@ namespace Craft;
  */
 class SocialVariable
 {
-    static public function relativeTime($timestamp, $newer_timestamp=NULL)
+    public static function relativeTime($timestamp, $newer_timestamp = null, $format = "natural")
     {
-        if ($newer_timestamp === NULL) {
+        if ($newer_timestamp === null) {
             $newer_timestamp = time();
         }
 
@@ -20,20 +20,40 @@ class SocialVariable
         $time_since = $newer_timestamp - $timestamp;
 
         if ($time_since > 604800) {
-            $weeks = floor($time_since/604800);
-            return $weeks . ' ' . ($weeks == 1 ? 'week' : 'weeks') . ' ago';
+            $weeks = floor($time_since / 604800);
+            if ($format == 'dense') {
+                return $weeks . 'w';
+            } else {
+                return $weeks . ' ' . ($weeks == 1 ? 'week' : 'weeks') . ' ago';
+            }
         } elseif ($time_since > 86400) {
-            $days = floor($time_since/86400);
-            return $days . ' ' . ($days == 1 ? 'day' : 'days') . ' ago';
+            $days = floor($time_since / 86400);
+            if ($format == 'dense') {
+                return $days . 'd';
+            } else {
+                return $days . ' ' . ($days == 1 ? 'day' : 'days') . ' ago';
+            }
         } elseif ($time_since > 3600) {
-            $hours = floor($time_since/3600);
-            return $hours . ' ' . ($hours == 1 ? 'hour' : 'hours') . ' ago';
+            $hours = floor($time_since / 3600);
+            if ($format == 'dense') {
+                return $hours . 'h';
+            } else {
+                return $hours . ' ' . ($hours == 1 ? 'hour' : 'hours') . ' ago';
+            }
         } elseif ($time_since > 60) {
-            $minutes = floor($time_since/60);
-            return $minutes . ' ' . ($minutes == 1 ? 'minute' : 'minutes') . ' ago';
+            $minutes = floor($time_since / 60);
+            if ($format == 'dense') {
+                return $minutes . 'm';
+            } else {
+                return $minutes . ' ' . ($minutes == 1 ? 'minute' : 'minutes') . ' ago';
+            }
         } else {
             $seconds = $time_since;
-            return $seconds . ' ' . ($seconds == 1 ? 'second' : 'seconds') . ' ago';
+            if ($format == 'dense') {
+                return $seconds . 's';
+            } else {
+                return $seconds . ' ' . ($seconds == 1 ? 'second' : 'seconds') . ' ago';
+            }
         }
     }
 
@@ -42,12 +62,12 @@ class SocialVariable
     public function __construct()
     {
         if (self::$networks === null) {
-            self::$networks = array(
-                'Facebook'  => craft()->social_facebook,
+            self::$networks = [
+                'Facebook' => craft()->social_facebook,
                 'Instagram' => craft()->social_instagram,
-                'Twitter'   => craft()->social_twitter,
-                'WordPress' => craft()->social_wordpress
-            );
+                'Twitter' => craft()->social_twitter,
+                'WordPress' => craft()->social_wordpress,
+            ];
         }
     }
 
@@ -77,7 +97,7 @@ class SocialVariable
         return file_exists(dirname(__DIR__) . '/vendor/autoload.php');
     }
 
-    public function posts(array $criteria=array())
+    public function posts(array $criteria = array())
     {
         $posts = array();
 
@@ -103,7 +123,7 @@ class SocialVariable
             $posts = array_merge($posts, $network_posts);
         }
 
-        usort($posts, function($a, $b) {
+        usort($posts, function ($a, $b) {
             return $a['created'] < $b['created'];
         });
 
@@ -113,6 +133,7 @@ class SocialVariable
 
         foreach ($posts as &$post) {
             $post['relative'] = static::relativeTime($post['created']);
+            $post['rel'] = static::relativeTime($post['created'], null, 'dense');
         }
 
         return $posts;
