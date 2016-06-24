@@ -1,0 +1,12 @@
+{% for post in craft.social.posts({ limit: 5 }) %}
+    <hr />
+    <div>
+        <cite>
+            {{ post.author }} at
+            <a href="{{ post.link }}">{{ post.created|date('F j, Y') }} ({{ post.relative }})</a>:
+        </cite>
+
+        <blockquote>{{ post.message }}</blockquote>
+    </div>
+{% endfor %}
+<hr />
