@@ -88,8 +88,8 @@ class Social_FacebookService extends BaseApplicationComponent
                 'message'     => $message,
                 'link'        => isset($native['link']) ? $native['link'] : ($f . $native['id']),
                 'picture'     => isset($native['picture']) ? $native['picture'] : false,
-                'author'      => $native['from']->name,
-                'author_link' => $f . $native['from']->id,
+                'author'      => isset($native['from']) ? $native['from']->name : false,
+                'author_link' => isset($native['from']) ? $f . $native['from']->id : false,
                 'created'     => strtotime($native['created_time']),
 
                 'print_r'     => print_r($native, true),
