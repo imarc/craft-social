@@ -26,25 +26,26 @@ class Social_InstagramService extends BaseApplicationComponent
 
         $data = json_decode($response, true);
 
-        if (!$data['data']) {
-            throw new Exception("Error communicating with the Instagram API");
-        }
-
-        $posts = array();
-        foreach ($data['data'] as $post) {
-            $author_link = 'https://www.instagram.com/' . $post['user']['username'];
-            $posts[] = array(
-                'network' => 'Instagram',
-                'message' => $post['caption']['text'],
-                'link'    => $post['link'],
-                'picture' => $post['images']['standard_resolution']['url'],
-                'author'  => $post['user']['username'],
-                'author_link' => $author_link,
-                'created' => $post['created_time'],
-                'native' => $post,
-                'print_r' => print_r($post, true)
-            );
-        }
+        if (!isset($data['data'])) {
+        	SocialPlugin::log('Error communicating with the Instagram API', LogLevel::Error);
+        	$posts = array();
+        } else {
+	        $posts = array();
+	        foreach ($data['data'] as $post) {
+	            $author_link = 'https://www.instagram.com/' . $post['user']['username'];
+	            $posts[] = array(
+	                'network' => 'Instagram',
+	                'message' => $post['caption']['text'],
+	                'link'    => $post['link'],
+	                'picture' => $post['images']['standard_resolution']['url'],
+	                'author'  => $post['user']['username'],
+	                'author_link' => $author_link,
+	                'created' => $post['created_time'],
+	                'native' => $post,
+	                'print_r' => print_r($post, true)
+	            );
+	        }
+	    }
 
         return $posts;
     }

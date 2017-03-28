@@ -94,7 +94,7 @@ class SocialVariable
 
     public function vendorPopulated()
     {
-        return file_exists(dirname(__DIR__) . '/vendor/autoload.php');
+        return file_exists(CRAFT_BASE_PATH . '../vendor/autoload.php');
     }
 
     public function posts(array $criteria = array())

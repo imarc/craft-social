@@ -32,12 +32,13 @@ class Social_FacebookService extends BaseApplicationComponent
         );
 
         if (strpos($response, 'access_token=') !== 0) {
-            throw new Exception('Facebook authentication failed.');
-        }
+            SocialPlugin::log('Facebook authentication failed.', LogLevel::Error);
+            $this->session = false;
+        } else {
+	        $token = substr($response, strlen('access_token='));
 
-        $token = substr($response, strlen('access_token='));
-
-        $this->session = new FacebookSession($token);
+	        $this->session = new FacebookSession($token);
+	    }
 
         return $this->session;
     }
